@@ -10,8 +10,7 @@ class AuthorController extends Controller
 {
     public function index() {
 
-        $data = new Author(); //Membuat onjek dari model Author
-        $authors = $data->getAuthors(); //Mengakses method getAuthors dari model Author
+        $authors = Author::all(); //Mengambil semua data author dari tabel authors
 
         return view('author', ['authors' => $authors]); //Mengirim data author ke view author.blade.php
     }

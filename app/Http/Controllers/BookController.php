@@ -10,9 +10,8 @@ class BookController extends Controller
 {
     public function index() {
 
-        $data = new Book(); //Membuat onjek dari model Book
-        $books = $data->getBooks(); //Mengakses method getBooks dari model Book
-
+        $books = Book::all(); //Mengambil semua data buku dari tabel books
+        
         return view('books', ['books' => $books]); //Mengirim data buku ke view books.blade.php
     }
 }

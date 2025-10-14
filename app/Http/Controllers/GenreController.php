@@ -9,8 +9,7 @@ class GenreController extends Controller
 {
     public function index() {
 
-        $data = new Genre(); //Membuat onjek dari model Genre
-        $genres = $data->getGenres(); //Mengakses method getGenres dari model Genre
+        $genres = Genre::all(); //Mengambil semua data genre dari tabel genres
 
         return view('genres', ['genres' => $genres]); //Mengirim data genre ke view genres.blade.php
     }
