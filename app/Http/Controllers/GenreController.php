@@ -11,6 +11,11 @@ class GenreController extends Controller
 
         $genres = Genre::all(); //Mengambil semua data genre dari tabel genres
 
-        return view('genres', ['genres' => $genres]); //Mengirim data genre ke view genres.blade.php
+        // Menampilkan data genre dalam bentuk json
+        return response()->json([
+            'success' => true,
+            'message' => 'Get all genre',
+            'data'    => $genres  
+        ], 200);
     }
 }

@@ -12,6 +12,11 @@ class AuthorController extends Controller
 
         $authors = Author::all(); //Mengambil semua data author dari tabel authors
 
-        return view('author', ['authors' => $authors]); //Mengirim data author ke view author.blade.php
+        // Menampilkan data author dalam bentuk json
+        return response()->json([
+            'success' => true,
+            'message' => 'Get all author',
+            'data'    => $authors 
+        ], 200);
     }
 }

@@ -12,6 +12,11 @@ class BookController extends Controller
 
         $books = Book::all(); //Mengambil semua data buku dari tabel books
         
-        return view('books', ['books' => $books]); //Mengirim data buku ke view books.blade.php
+        // Menampilkan data genre dalam bentuk json
+        return response()->json([
+            'success' => true,
+            'message' => 'Get all book',
+            'data'    => $books
+        ], 200);
     }
 }
