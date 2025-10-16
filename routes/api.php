@@ -13,9 +13,12 @@ Route::get('/user', function (Request $request) {
 
 // Manggil BookController dari file BookController.php
 Route::get ('/books', [BookController::class, 'index']);
+Route::post ('/books', [BookController::class, 'store']);
 
 // Manggil GenreController dari file GenreController.php
 Route::get ('/genres', [GenreController::class, 'index']);
+Route::post ('/genres', [GenreController::class, 'store']);
 
 // Manggil AuthorController dari file AuthorController.php
 Route::get ('/authors', [AuthorController::class, 'index']);
+Route::post ('/authors', [AuthorController::class, 'store']);

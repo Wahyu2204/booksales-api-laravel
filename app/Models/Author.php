@@ -8,4 +8,11 @@ class Author extends Model
 {
     // Menentukan nama tabel yang digunakan oleh model Author
     protected $table = 'authors'; // Nama tabel
+
+    // Menentukan kolom yang dapat diisi secara massal
+    protected $fillable = [
+        'name',
+        'photo',
+        'bio'
+    ];
 }
