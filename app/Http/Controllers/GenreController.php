@@ -57,4 +57,84 @@ class GenreController extends Controller
             'data'    => $genre
         ], 201); //201 = Created
     }
+
+    public function show($id) {
+        $genre = Genre::find($id); //Mencari data buku berdasarkan id
+
+        if (!$genre) { //Cek apakah data buku ditemukan
+            return response()->json([
+                'success' => false,
+                'message' => 'Genre not found'
+            ], 404); //Jika data tidak ditemukan, kembalikan response dengan pesan "genre not found"
+        }
+
+        // Menampilkan data genre dalam bentuk json
+        return response()->json([
+            'success' => true,
+            'message' => 'Get genre by id',
+            'data'    => $genre
+        ], 200);
+    }
+
+    public function update(Request $request, string $id) {
+        // 1. Mencari data Genre
+        $genre = Genre::find($id);
+
+        if (!$genre) { //Cek apakah data buku ditemukan
+            return response()->json([
+                'success' => false,
+                'message' => 'Genre not found'
+            ], 404); //Jika data tidak ditemukan, kembalikan response dengan pesan "Genre not found"
+        }
+
+        // 2. Validator
+        $Validator = Validator::make($request->all(), [
+            'name'        => 'required|string|max:255',
+            'description' => 'required|string'
+        ]);
+
+        if ($Validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => $Validator->errors()
+            ], 422); //Jika ada error, kembalikan response dengan pesan error
+        }
+
+        // 3. Siapkan data untuk diupdate
+        $data = [
+            'name'        => $request->name,
+            'description' => $request->description
+        ];
+
+        // 4. Handle image (upload dan delete jika ada)
+
+        // 5. Update data
+        $genre->update($data);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Resource updated successfully',
+            'data'    => $genre
+        ], 200);
+    }
+
+    public function destroy(string $id) {
+        $genre = Genre::find($id); //Mencari data buku berdasarkan id
+
+        if (!$genre) { //Cek apakah data buku ditemukan
+            return response()->json([
+                'success' => false,
+                'message' => 'Genre not found'
+            ], 404); //Jika data tidak ditemukan, kembalikan response dengan pesan "Genre not found"
+        }
+
+        // Menghapus data buku
+        $genre->delete();
+
+        // Menampilkan response dalam bentuk json
+        return response()->json([
+            'success' => true,
+            'message' => 'Resource deleted successfully'
+        ], 200);
+    }
 }
