@@ -11,9 +11,17 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+// Memakai Route Native
 // Manggil BookController dari file BookController.php
-Route::get ('/books', [BookController::class, 'index']);
-Route::post ('/books', [BookController::class, 'store']);
+// Route::get ('/books', [BookController::class, 'index']);
+// Route::post ('/books', [BookController::class, 'store']);
+// Route::get ('/books/{id}', [BookController::class, 'show']);
+// Route::post ('/books/{id}', [BookController::class, 'update']);
+// Route::delete('/books/{id}', [BookController::class, 'destroy']);
+
+// Memakai Route Resource
+// Route::Resource('/books', BookController::class); //web.php
+Route::apiResource('/books', BookController::class); //api.php
 
 // Manggil GenreController dari file GenreController.php
 Route::get ('/genres', [GenreController::class, 'index']);
