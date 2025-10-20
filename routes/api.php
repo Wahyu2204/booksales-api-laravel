@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // Manggil controller dari folder Http/Controllers
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\AuthorController;
@@ -10,6 +11,20 @@ use App\Http\Controllers\AuthorController;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+// Route untuk Authentication
+Route::post ('/register', [AuthController::class, 'register']);
+Route::post ('/login', [AuthController::class, 'login']);
+Route::post ('/logout', [AuthController::class, 'logout']) -> middleware('auth:api');
+
+Route::middleware(['auth:api'])->group(function () {
+
+    Route::middleware(['role:admin'])->group(function () {
+        Route::apiResource('/books', BookController::class) -> only(['store', 'update', 'destroy']);
+        Route::apiResource('/genres', GenreController::class) -> only(['store', 'update', 'destroy']);
+        Route::apiResource('/authors', AuthorController::class) -> only(['store', 'update', 'destroy']);
+    });
+});
 
 // Memakai Route Native
 // Manggil BookController dari file BookController.php
@@ -21,7 +36,7 @@ Route::get('/user', function (Request $request) {
 
 // Memakai Route Resource
 // Route::Resource('/books', BookController::class); //web.php
-Route::apiResource('/books', BookController::class); //api.php
+Route::apiResource('/books', BookController::class) -> only(['index', 'show']); //api.php
 
 // Manggil GenreController dari file GenreController.php
 // Route::get ('/genres', [GenreController::class, 'index']);
@@ -32,7 +47,7 @@ Route::apiResource('/books', BookController::class); //api.php
 
 // Memakai Route Resource
 // Route::Resource('/genres', GenreController::class); //web.php
-Route::apiResource('/genres', GenreController::class); //api.php
+Route::apiResource('/genres', GenreController::class) -> only(['index', 'show']); //api.php
 
 // Manggil AuthorController dari file AuthorController.php
 // Route::get ('/authors', [AuthorController::class, 'index']);
@@ -43,4 +58,4 @@ Route::apiResource('/genres', GenreController::class); //api.php
 
 // Memakai Route Resource
 // Route::Resource('/authors', AuthorController::class); //web.php
-Route::apiResource('/authors', AuthorController::class); //api.php
+Route::apiResource('/authors', AuthorController::class) -> only(['index', 'show']); //api.php
