@@ -7,24 +7,39 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\GenreController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\TransactionController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-// Route untuk Authentication
+// ----------------------------------------------------------------
+// Route untuk Login, Register, Logout
+//-----------------------------------------------------------------
+
 Route::post ('/register', [AuthController::class, 'register']);
 Route::post ('/login', [AuthController::class, 'login']);
 Route::post ('/logout', [AuthController::class, 'logout']) -> middleware('auth:api');
 
+// ----------------------------------------------------------------
+// Route untuk Authentication
+//-----------------------------------------------------------------
+
 Route::middleware(['auth:api'])->group(function () {
+
+    Route::apiResource('/transactions', TransactionController::class) -> only(['store', 'update' , 'show']); //api.php
 
     Route::middleware(['role:admin'])->group(function () {
         Route::apiResource('/books', BookController::class) -> only(['store', 'update', 'destroy']);
         Route::apiResource('/genres', GenreController::class) -> only(['store', 'update', 'destroy']);
         Route::apiResource('/authors', AuthorController::class) -> only(['store', 'update', 'destroy']);
+        Route::apiResource('/transactions', TransactionController::class) -> only(['index', 'destroy']);
     });
 });
+
+// ----------------------------------------------------------------
+// Route untuk Before Auth Middleware
+//-----------------------------------------------------------------
 
 // Memakai Route Native
 // Manggil BookController dari file BookController.php
@@ -59,3 +74,6 @@ Route::apiResource('/genres', GenreController::class) -> only(['index', 'show'])
 // Memakai Route Resource
 // Route::Resource('/authors', AuthorController::class); //web.php
 Route::apiResource('/authors', AuthorController::class) -> only(['index', 'show']); //api.php
+
+// Manggil TransactionController dari file TransactionController.php
+// Route::apiResource('/transactions', TransactionController::class); //api.php
